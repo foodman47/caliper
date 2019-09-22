@@ -29,6 +29,8 @@ const packages = [
     'caliper-composer',
     'caliper-fabric',
     'caliper-iroha',
+    'caliper-corda',
+    'caliper-bftsmart',
     'caliper-sawtooth',
     'caliper-cli'
 ];

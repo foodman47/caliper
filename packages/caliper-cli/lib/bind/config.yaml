@@ -81,3 +81,11 @@ sut:
             settings:
             - *new-node-old-grpc
         latest: *composer-latest
+    corda:
+        1.0.0: &corda-latest
+            packages: []
+        latest: *corda-latest
+    bftsmart:
+        1.0.0: &bftsmart-latest
+            packages: []
+        latest: *bftsmart-latest
