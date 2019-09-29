@@ -51,12 +51,12 @@ class Client {
         val issueRef = OpaqueBytes.of(Byte.MAX_VALUE)
 
         // parameters to measure
-        val batches = arrayOf(1, 5, 10, 50, 100)
+        val batches = arrayOf(1, 10, 50, 100, 500, 1000)
 
         val res = JSONArray()
         for (batch in batches) {
 
-            var nTX = 1000
+            var nTX = 10000
 
             // out min, max resp time, trp, simulation time
             var min: Long = 99999
@@ -72,7 +72,7 @@ class Client {
             val recipient = proxy.wellKnownPartyFromX500Name(x500Name) as Party
             val notary = notaries.get(0)
 
-            val flow = proxy.startFlow(::CashIssueFlow, 1_000_000.DOLLARS, issueRef, notary).returnValue.getOrThrow();
+            //val flow = proxy.startFlow(::CashIssueFlow, 1_000_000.DOLLARS, issueRef, notary).returnValue.getOrThrow();
 
             var start1 = System.currentTimeMillis()
 
@@ -81,7 +81,8 @@ class Client {
                     for (i in 0..(nTX / batch - 1)) {
                         val start = System.currentTimeMillis()
                         // start flow and wait for reply
-                        val flow = proxy.startFlow(::CashPaymentFlow, issueAmount, recipient).returnValue.getOrThrow();
+                        // val flow = proxy.startFlow(::CashPaymentFlow, issueAmount, recipient).returnValue.getOrThrow();
+                        val flow = proxy.startFlow(::CashIssueFlow, 1.DOLLARS, issueRef, notary).returnValue.getOrThrow();
                         val end = System.currentTimeMillis() - start
                         logger.info("{}", Thread.currentThread().id.toString() + " " + end)
                         ends.add(end)
@@ -114,6 +115,7 @@ class Client {
             }
             // compute all metrics and convert them into JSON
             var avg_resp_time = sum / nTX.toLong()
+            val std = calculateSD(ends)
             // record result in json format
             var obj_array = JSONObject()
             // used for input params has reminder
@@ -124,6 +126,7 @@ class Client {
             out.put("throughput", trp); out.put("avg_resp_time", avg_resp_time);
             out.put("max_resp_time", max); out.put("min_resp_time", min); out.put("simulation_time", end1);
             out.put("success", nTX); out.put("fail", nTX - nTX)
+            out.put("std_dev", trp * std / avg_resp_time)
             // used for metrics info
             var info = JSONObject(); info.put("throughput", "tps"); info.put("time", "ms")
             // link the four json objects into main
@@ -136,5 +139,19 @@ class Client {
             logger.info("{}", obj_array)
         }
         logger.info("{}", res)
+    }
+
+    fun calculateSD(numArray: java.util.ArrayList<Long>): Double {
+        var sum = 0.0
+        var standardDeviation = 0.0
+        val length = numArray.size
+        for (num in numArray) {
+            sum += num.toDouble()
+        }
+        val mean = sum / length
+        for (num in numArray) {
+            standardDeviation += Math.pow(num - mean, 2.0)
+        }
+        return Math.sqrt(standardDeviation / length)
     }
 }
