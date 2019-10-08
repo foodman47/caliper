@@ -19,106 +19,58 @@ test:
     performance with simple account opening & querying transactions
   clients:
     type: local
-    number: 5
+    number: 1
   rounds:
   - label: open
     txNumber:
     - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
-    - 10000
     rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 100
-    - type: fixed-rate
-      opts:
-        tps: 200
-    - type: fixed-rate
-      opts:
-        tps: 300
-    - type: fixed-rate
-      opts:
-        tps: 400
-    - type: fixed-rate
-      opts:
-        tps: 500
-    - type: fixed-rate
-      opts:
-        tps: 600
-    - type: fixed-rate
-      opts:
-        tps: 700
-    - type: fixed-rate
-      opts:
-        tps: 800
-    - type: fixed-rate
-      opts:
-        tps: 900
     - type: fixed-rate
       opts:
         tps: 1000
-    - type: fixed-rate
-      opts:
-        tps: 1100
-    - type: fixed-rate
-      opts:
-        tps: 1200
-    - type: fixed-rate
-      opts:
-        tps: 1300
-    - type: fixed-rate
-      opts:
-        tps: 1400
-    - type: fixed-rate
-      opts:
-        tps: 1500
-    - type: fixed-rate
-      opts:
-        tps: 1600
-    - type: fixed-rate
-      opts:
-        tps: 1700
-    - type: fixed-rate
-      opts:
-        tps: 1800
-    - type: fixed-rate
-      opts:
-        tps: 1900
-    - type: fixed-rate
-      opts:
-        tps: 2000
     arguments:
-      money: 10000
+      money: 1
     callback: benchmark/simple/open.js
   - label: query
     txNumber:
-    - 1000
-    - 1000
+    - 10000
     rateControl:
     - type: fixed-rate
       opts:
-        tps: 100
-    - type: fixed-rate
-      opts:
-        tps: 200
+        tps: 1000
     callback: benchmark/simple/query.js
+  - label: transfer
+    txNumber:
+      - 10000
+      - 10000
+      - 10000
+      - 10000
+      - 10000
+      - 10000
+      - 10000
+    rateControl:
+      - type: fixed-rate
+        opts:
+          tps: 50
+      - type: fixed-rate
+        opts:
+          tps: 100
+      - type: fixed-rate
+        opts:
+          tps: 200
+      - type: fixed-rate
+        opts:
+          tps: 400
+      - type: fixed-rate
+        opts:
+          tps: 600
+      - type: fixed-rate
+        opts:
+          tps: 800
+      - type: fixed-rate
+        opts:
+          tps: 1000
+  callback: benchmark/simple/transfer.js
 monitor:
   type:
   - docker

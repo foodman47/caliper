@@ -208,6 +208,49 @@ let SimpleChaincode = class {
 
         return shim.success();
     }
+
+    /**
+     * Increment a given amount of money from onto an account.
+     * @async
+     * @param {ChaincodeStub} stub The chaincode stub object.
+     * @param {String[]} params The parameters for money increment.
+     * Index 0: sending account name. Index 1: amount to add
+     * @return {Promise<SuccessResponse | ErrorResponse>} Returns a promise of a response indicating the result of the invocation.
+     */
+    async increment(stub, params) {
+        if (params.length !== 2) {
+            return getErrorResponse('increment', ERROR_WRONG_FORMAT);
+        }
+
+        let money = parseInt(params[1]);
+        if (isNaN(money)) {
+            return getErrorResponse('increment', ERROR_WRONG_FORMAT);
+        }
+        let moneyBytes1;
+        try {
+            moneyBytes1 = await stub.getState(params[0]);
+        } catch (err) {
+            return getErrorResponse('increment', ERROR_SYSTEM, err);
+        }
+
+        if (!moneyBytes1) {
+            return getErrorResponse('increment', ERROR_ACCOUNT_ABNORMAL);
+        }
+
+        let money1 = parseInt(String.fromCharCode.apply(String, moneyBytes1));
+
+        if (!money1) {
+            return getErrorResponse('increment', ERROR_MONEY_NOT_ENOUGH);
+        }
+        money1 += money;
+        try {
+            await stub.putState(params[0], Buffer.from(money1.toString()));
+        } catch (err) {
+            return getErrorResponse('increment', ERROR_SYSTEM, err);
+        }
+
+        return shim.success();
+    }
 };
 
 try {

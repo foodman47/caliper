@@ -72,11 +72,11 @@ channels:
         eventSource: true
 
     chaincodes:
-    - id: marbles
-      version: v0
-      language: node
-      path: src/contract/fabric/marbles/node
-      metadataPath: src/contract/fabric/marbles/node/metadata
+#    - id: marbles
+#      version: v0
+#      language: node
+#      path: src/contract/fabric/marbles/node
+#      metadataPath: src/contract/fabric/marbles/node/metadata
     - id: simple
       version: v0
       language: node

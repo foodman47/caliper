@@ -19,39 +19,96 @@ test:
     performance with simple account opening & querying transactions
   clients:
     type: local
-    number: 1
+    number: 5
   rounds:
   - label: open
-    description: Test description for the opening of an account through the deployed chaincode
+    description: Test description for issuing accounts
     txNumber:
-    - 100
+        - 1000
     rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 50
+        - type: fixed-rate
+          opts:
+              tps: 1000
     arguments:
-      money: 10000
+        money: 10000000
     callback: benchmark/simple/open.js
-  - label: query
-    description: Test description for the query performance of the deployed chaincode
+  - label: increment
+    description: Test description for incrementing money between accounts
     txNumber:
-    - 100
-    rateControl:
-    - type: fixed-rate
-      opts:
-        tps: 100
-    callback: benchmark/simple/query.js
-  - label: transfer
-    description: Test description for transfering money between accounts
-    txNumber:
-        - 100
+        - 1000
     rateControl:
         - type: fixed-rate
           opts:
               tps: 50
     arguments:
-        money: 100
-    callback: benchmark/simple/transfer.js
+        money: 1
+    callback: benchmark/simple/increment.js
+  - label: increment
+    description: Test description for incrementing money between accounts
+    txNumber:
+      - 1000
+    rateControl:
+      - type: fixed-rate
+        opts:
+            tps: 100
+    arguments:
+       money: 1
+    callback: benchmark/simple/increment.js
+  - label: increment
+    description: Test description for incrementing money between accounts
+    txNumber:
+        - 1000
+    rateControl:
+        - type: fixed-rate
+          opts:
+              tps: 200
+    arguments:
+        money: 1
+    callback: benchmark/simple/increment.js
+  - label: increment
+    description: Test description for incrementing money between accounts
+    txNumber:
+        - 1000
+    rateControl:
+        - type: fixed-rate
+          opts:
+              tps: 400
+    arguments:
+        money: 1
+    callback: benchmark/simple/increment.js
+  - label: increment
+    description: Test description for incrementing money between accounts
+    txNumber:
+        - 1000
+    rateControl:
+        - type: fixed-rate
+          opts:
+              tps: 600
+    arguments:
+        money: 1
+    callback: benchmark/simple/increment.js
+  - label: increment
+    description: Test description for incrementing money between accounts
+    txNumber:
+        - 1000
+    rateControl:
+        - type: fixed-rate
+          opts:
+              tps: 800
+    arguments:
+        money: 1
+    callback: benchmark/simple/increment.js
+  - label: increment
+    description: Test description for incrementing money between accounts
+    txNumber:
+        - 1000
+    rateControl:
+        - type: fixed-rate
+          opts:
+              tps: 1000
+    arguments:
+        money: 1
+    callback: benchmark/simple/increment.js
 monitor:
   type:
   - docker

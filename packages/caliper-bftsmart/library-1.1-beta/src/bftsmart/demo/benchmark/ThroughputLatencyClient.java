@@ -151,7 +151,6 @@ public class ThroughputLatencyClient {
                     try {
 						Thread.sleep(timeout);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
                 }                   
@@ -203,7 +202,6 @@ public class ThroughputLatencyClient {
             try {
             	fileOut = new PrintStream("./results/client_"+this.id+"_"+numThreads+"_"+this.requestSize+".json");
     		} catch (FileNotFoundException e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
     		System.setOut(fileOut);
